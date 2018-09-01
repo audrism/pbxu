@@ -29,9 +29,10 @@ RUN add-apt-repository ppa:ondrej/php
 RUN apt-get -q update && \
   apt-get install --no-install-recommends -y --force-yes -q \    
     net-tools mpg123 sox \
-    unixodbc ffmpeg lame && \
-  apt-get clean && \
-  rm /var/lib/apt/lists/*_*
+    unixodbc ffmpeg lame aptitude
+#   && \
+#  apt-get clean && \
+#  rm /var/lib/apt/lists/*_*
   
   
 #RUN a2enmod rewrite && \
