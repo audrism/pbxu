@@ -26,10 +26,10 @@ RUN apt-get -q update && \
     git bc curl apt-transport-https 
 
 
-RUN add-apt-repository ppa:ondrej/php
+#RUN add-apt-repository ppa:ondrej/php
     
 RUN apt-get -q update && \
-  apt-get install --no-install-recommends -y ---allow-downgrades -q \    
+  apt-get install --no-install-recommends -y --allow-downgrades -q \    
     net-tools mpg123 sox \
     unixodbc ffmpeg lame 
 #   && \
