@@ -3,9 +3,10 @@ FROM ubuntu:bionic
 RUN mkdir /asterisk
 WORKDIR /asterisk
 
+ENV DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
 
 RUN apt-get -q update && \
-  apt-get install --no-install-recommends -y --force-yes -q \
+  apt-get install --no-install-recommends -y --allow-downgrades -q \
     openssh-server \
     software-properties-common \
 	     lsof sudo \
@@ -21,15 +22,16 @@ RUN apt-get -q update && \
 		  vim \
 		  build-essential \
     ca-certificates \
+    aptitude \
     git bc curl apt-transport-https 
 
 
 RUN add-apt-repository ppa:ondrej/php
     
 RUN apt-get -q update && \
-  apt-get install --no-install-recommends -y --force-yes -q \    
+  apt-get install --no-install-recommends -y ---allow-downgrades -q \    
     net-tools mpg123 sox \
-    unixodbc ffmpeg lame aptitude
+    unixodbc ffmpeg lame 
 #   && \
 #  apt-get clean && \
 #  rm /var/lib/apt/lists/*_*
