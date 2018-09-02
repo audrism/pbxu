@@ -62,10 +62,10 @@ RUN cd /usr/src && \
     make config && \
     ldconfig  && \
     update-rc.d -f asterisk remove && \
-    touch /etc/asterisk/{modules,ari,statsd}.conf && \
+    touch /etc/asterisk/modules.conf etc/asterisk/ari.conf etc/asterisk/statsd.conf && \
     cp configs/samples/smdi.conf.sample /etc/asterisk/smdi.conf && \
     useradd -m asterisk && \
     chown asterisk. /var/run/asterisk && \
-    chown -R asterisk. /var/{lib,log,spool}/asterisk && \
+    chown -R asterisk. /var/lib/asterisk /var/log/asterisk /var/spool/asterisk && \
     chown -R asterisk. /etc/asterisk /usr/lib/asterisk /var/www
 
