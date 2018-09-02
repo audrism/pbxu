@@ -62,7 +62,7 @@ RUN cd /usr/src && \
     make config && \
     ldconfig  && \
     update-rc.d -f asterisk remove && \
-    touch /etc/asterisk/modules.conf etc/asterisk/ari.conf etc/asterisk/statsd.conf && \
+    touch /etc/asterisk/modules.conf /etc/asterisk/ari.conf /etc/asterisk/statsd.conf && \
     cp configs/samples/smdi.conf.sample /etc/asterisk/smdi.conf && \
     useradd -m asterisk && \
     chown asterisk. /var/run/asterisk && \
