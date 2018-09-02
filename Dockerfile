@@ -67,5 +67,4 @@ RUN cd /usr/src && \
     useradd -m asterisk && \
     chown asterisk. /var/run/asterisk && \
     chown -R asterisk. /var/lib/asterisk /var/log/asterisk /var/spool/asterisk && \
-    chown -R asterisk. /etc/asterisk /usr/lib/asterisk /var/www
-
+    chown -R asterisk. /etc/asterisk /usr/lib/asterisk 
