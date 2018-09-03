@@ -19,32 +19,36 @@ RUN apt-get -q update && \
 		  libpam-sss \
 		  libsss-sudo \
 		  ldap-utils \
-		  vim \
+		  vim less \
 		  build-essential \
     ca-certificates \
     aptitude \
     git bc curl apt-transport-https 
 
 
-#RUN add-apt-repository ppa:ondrej/php
+RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
     
 RUN apt-get -q update && \
   apt-get install --no-install-recommends -y --allow-downgrades -q \    
     net-tools mpg123 sox \
-    unixodbc ffmpeg lame 
+    unixodbc ffmpeg lame apache2 \
+    libapache2-mod-php5.6 libapache2-mod-security2 libmysqlclient-dev mysql-client \
+    mysql-server php-pear php5.6 php5.6-cgi php5.6-cli php5.6-curl php5.6-fpm \
+    php5.6-gd php5.6-mbstring php5.6-mysql php5.6-odbc php5.6-xml \
+    unixodbc ffmpeg lame fail2ban mailutils
 #   && \
 #  apt-get clean && \
 #  rm /var/lib/apt/lists/*_*
   
   
-#RUN a2enmod rewrite && \
-#    a2enmod proxy_fcgi setenvif && \
-#    a2enconf php5.6-fpm && \
-#    sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf && \
-#    sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/apache2/apache2.conf  && \
-#    sed -i 's/^memory_limit =.*/memory_limit = 256M/' /etc/php/5.6/apache2/php.ini && \
-#    sed -i 's/^upload_ma.*/upload_max_filesize = 120M/' /etc/php/5.6/apache2/php.ini && \
-#    rm -rf /var/www/html
+RUN a2enmod rewrite && \
+    a2enmod proxy_fcgi setenvif && \
+    a2enconf php5.6-fpm && \
+    sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf && \
+    sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/apache2/apache2.conf  && \
+    sed -i 's/^memory_limit =.*/memory_limit = 256M/' /etc/php/5.6/apache2/php.ini && \
+    sed -i 's/^upload_ma.*/upload_max_filesize = 120M/' /etc/php/5.6/apache2/php.ini && \
+    rm -rf /var/www/html
 
 RUN cd /usr/src && \
     git clone https://github.com/naf419/asterisk.git --branch gvsip && \
@@ -67,4 +71,12 @@ RUN cd /usr/src && \
     useradd -m asterisk && \
     chown asterisk. /var/run/asterisk && \
     chown -R asterisk. /var/lib/asterisk /var/log/asterisk /var/spool/asterisk && \
-    chown -R asterisk. /etc/asterisk /usr/lib/asterisk 
+    chown -R asterisk. /etc/asterisk /usr/lib/asterisk /var/www
+RUN cd /usr/src && \
+    wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz && \
+    tar vxfz freepbx-14.0-latest.tgz && \
+    rm -f freepbx-14.0-latest.tgz && \
+    cd freepbx && \
+    ./start_asterisk start && \
+    ./install -n
+COPY freepbx.service /lib/systemd/system    
