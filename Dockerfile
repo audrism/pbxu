@@ -22,7 +22,7 @@ RUN apt-get -q update && \
 		  vim less \
 		  build-essential \
     ca-certificates \
-    aptitude \
+    aptitude cron \
     git bc curl apt-transport-https 
 
 
@@ -39,6 +39,9 @@ RUN apt-get -q update && \
 #   && \
 #  apt-get clean && \
 #  rm /var/lib/apt/lists/*_*
+
+#RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+#    apt install -y nodejs
   
   
 RUN a2enmod rewrite && \
@@ -76,7 +79,6 @@ RUN cd /usr/src && \
 COPY freepbx.service /lib/systemd/system
 COPY mysqld.cnf /tmp
 COPY odbc.ini /tmp
-COPY startsvc.sh /bin
 
 RUN cat /tmp/mysqld.cnf >> /etc/mysql/conf.d/mysqld.cnf && \
     usermod -d /var/lib/mysql/ mysql && \
@@ -99,10 +101,10 @@ RUN cd /usr/src && \
     wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz && \
     tar vxfz freepbx-14.0-latest.tgz && \
     rm -f freepbx-14.0-latest.tgz && \
-    cd freepbx
-#    ./start_asterisk start && \
-#    service mysql restart
-# && \ 
-#    ./install -n
+    cd freepbx && \
+    ./start_asterisk start && \
+    service mysql restart && \ 
+    ./install -n
 
-COPY freepbx.service /lib/systemd/system    
+COPY startsvc.sh /bin
+ 
