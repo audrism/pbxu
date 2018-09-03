@@ -78,6 +78,8 @@ COPY mysqld.cnf /tmp
 COPY odbc.ini /tmp
 
 RUN cat /tmp/mysqld.cnf >> /etc/mysql/conf.d/mysqld.cnf && \
+    usermod -d /var/lib/mysql/ mysql && \
+    service mysql restart && \
     cat /tmp/odbc.ini >> /etc/odbc.ini && \
     cd && \
     wget https://cdn.mysql.com/Downloads/Connector-ODBC/5.3/mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit.tar.gz && \
@@ -96,7 +98,8 @@ RUN cd /usr/src && \
     wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz && \
     tar vxfz freepbx-14.0-latest.tgz && \
     rm -f freepbx-14.0-latest.tgz && \
-    cd freepbx 
-#    ./start_asterisk start && \
-#  ./install -n
+    cd freepbx && \
+    ./start_asterisk start && \
+    ./install -n
+
 COPY freepbx.service /lib/systemd/system    
