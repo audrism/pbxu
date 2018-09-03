@@ -76,6 +76,7 @@ RUN cd /usr/src && \
 COPY freepbx.service /lib/systemd/system
 COPY mysqld.cnf /tmp
 COPY odbc.ini /tmp
+COPY startsvc.sh /bin
 
 RUN cat /tmp/mysqld.cnf >> /etc/mysql/conf.d/mysqld.cnf && \
     usermod -d /var/lib/mysql/ mysql && \
@@ -100,6 +101,7 @@ RUN cd /usr/src && \
     rm -f freepbx-14.0-latest.tgz && \
     cd freepbx && \
     ./start_asterisk start && \
+    service mysql restart && \ 
     ./install -n
 
 COPY freepbx.service /lib/systemd/system    
