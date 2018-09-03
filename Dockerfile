@@ -72,7 +72,25 @@ RUN cd /usr/src && \
     chown asterisk. /var/run/asterisk && \
     chown -R asterisk. /var/lib/asterisk /var/log/asterisk /var/spool/asterisk && \
     chown -R asterisk. /etc/asterisk /usr/lib/asterisk /var/www
-RUN cd /usr/src && \
+COPY freepbx.service /lib/systemd/system
+COPY mysqld.cnf odbc.ini /tmp
+RUN cat /tmp/odbc.ini >> /etc/mysql/conf.d/mysqld.cnf && \
+    service mysql restart && \
+    cat odbc.ini >> /etc/odbc.ini && \
+    cd && \
+    wget https://cdn.mysql.com/Downloads/Connector-ODBC/5.3/mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit.tar.gz && \
+    tar -xzf mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit.tar.gz && \
+    rm -f mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit.tar.gz && \
+    cd mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit && \
+    cp bin/* /usr/bin/ && \
+    cp lib/* /usr/lib/x86_64-linux-gnu/odbc/ && \
+    myodbc-installer -a -d -n "MySQL" -t "Driver=/usr/lib/x86_64-linux-gnu/odbc/libmyodbc5a.so" && \
+    ldconfig && \
+    odbcinst -i -d -f /etc/odbcinst.ini && \
+    odbcinst -i -s -l -f /etc/odbc.ini && \
+    odbcinst -q -d
+    
+RUN    cd /usr/src && \
     wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz && \
     tar vxfz freepbx-14.0-latest.tgz && \
     rm -f freepbx-14.0-latest.tgz && \
