@@ -73,8 +73,9 @@ RUN cd /usr/src && \
     chown -R asterisk. /var/lib/asterisk /var/log/asterisk /var/spool/asterisk && \
     chown -R asterisk. /etc/asterisk /usr/lib/asterisk /var/www
 COPY freepbx.service /lib/systemd/system
-COPY mysqld.cnf odbc.ini /tmp
-RUN cat /tmp/odbc.ini >> /etc/mysql/conf.d/mysqld.cnf && \
+COPY mysqld.cnf /tmp
+COPY odbc.ini /tmp
+RUN cat /tmp/mysqld.cnf >> /etc/mysql/conf.d/mysqld.cnf && \
     service mysql restart && \
     cat odbc.ini >> /etc/odbc.ini && \
     cd && \
