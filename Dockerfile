@@ -29,7 +29,7 @@ RUN apt-get -q update && \
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
     
 RUN apt-get -q update && \
-  apt-get install --no-install-recommends -y --allow-downgrades -q \    
+    apt-get install --no-install-recommends -y --allow-downgrades -q \
     net-tools mpg123 sox \
     unixodbc ffmpeg lame apache2 \
     libapache2-mod-php5.6 libapache2-mod-security2 libmysqlclient-dev mysql-client \
@@ -72,12 +72,13 @@ RUN cd /usr/src && \
     chown asterisk. /var/run/asterisk && \
     chown -R asterisk. /var/lib/asterisk /var/log/asterisk /var/spool/asterisk && \
     chown -R asterisk. /etc/asterisk /usr/lib/asterisk /var/www
+
 COPY freepbx.service /lib/systemd/system
 COPY mysqld.cnf /tmp
 COPY odbc.ini /tmp
+
 RUN cat /tmp/mysqld.cnf >> /etc/mysql/conf.d/mysqld.cnf && \
-    service mysql restart && \
-    cat odbc.ini >> /etc/odbc.ini && \
+    cat /tmp/odbc.ini >> /etc/odbc.ini && \
     cd && \
     wget https://cdn.mysql.com/Downloads/Connector-ODBC/5.3/mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit.tar.gz && \
     tar -xzf mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit.tar.gz && \
@@ -91,11 +92,11 @@ RUN cat /tmp/mysqld.cnf >> /etc/mysql/conf.d/mysqld.cnf && \
     odbcinst -i -s -l -f /etc/odbc.ini && \
     odbcinst -q -d
     
-RUN    cd /usr/src && \
+RUN cd /usr/src && \
     wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz && \
     tar vxfz freepbx-14.0-latest.tgz && \
     rm -f freepbx-14.0-latest.tgz && \
-    cd freepbx && \
-    ./start_asterisk start && \
-    ./install -n
+    cd freepbx 
+#    ./start_asterisk start && \
+#  ./install -n
 COPY freepbx.service /lib/systemd/system    
