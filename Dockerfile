@@ -99,9 +99,10 @@ RUN cd /usr/src && \
     wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz && \
     tar vxfz freepbx-14.0-latest.tgz && \
     rm -f freepbx-14.0-latest.tgz && \
-    cd freepbx && \
-    ./start_asterisk start && \
-    service mysql restart && \ 
-    ./install -n
+    cd freepbx
+#    ./start_asterisk start && \
+#    service mysql restart
+# && \ 
+#    ./install -n
 
 COPY freepbx.service /lib/systemd/system    
