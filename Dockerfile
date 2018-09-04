@@ -82,7 +82,6 @@ COPY odbc.ini /tmp
 
 RUN cat /tmp/mysqld.cnf >> /etc/mysql/conf.d/mysqld.cnf && \
     usermod -d /var/lib/mysql/ mysql && \
-    service mysql restart && \
     cat /tmp/odbc.ini >> /etc/odbc.ini && \
     cd && \
     wget https://cdn.mysql.com/Downloads/Connector-ODBC/5.3/mysql-connector-odbc-5.3.11-linux-ubuntu18.04-x86-64bit.tar.gz && \
