@@ -5,6 +5,7 @@ echo "$i ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$i
 mkdir -p /run/sshd
 /usr/sbin/sshd -e
 service apache2 restart
+chown -R asterisk. /var/www
 service mysql restart
 /usr/sbin/fwconsole restart
 /bin/bash
