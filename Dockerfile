@@ -101,7 +101,7 @@ RUN cd /usr/src && \
     tar vxfz freepbx-14.0-latest.tgz && \
     rm -f freepbx-14.0-latest.tgz && \
     cd freepbx && \
-    find /var/lib/mysql -type f -exec touch {} && \
+    find /var/lib/mysql -type f -exec touch \{\} && \
     service mysql restart && \
     ./start_asterisk start && \
     ./install -n
