@@ -54,7 +54,7 @@ RUN a2enmod rewrite && \
     rm -rf /var/www/html
 
 RUN cd /usr/src && \
-    git clone https://github.com/naf419/asterisk.git --branch gvsip && \
+    git clone https://github.com/asterisk/asterisk.git --branch gvsip && \
     cd asterisk && \
     sed -i 's/MAINLINE_BRANCH=.*/MAINLINE_BRANCH=15/' build_tools/make_version && \
     ./contrib/scripts/install_prereq install && \
